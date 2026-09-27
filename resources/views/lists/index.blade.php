@@ -4,6 +4,32 @@
 
 @section('content')
 
+<!-- 追加トースト -->
+@if(session('success') || session('error'))
+  <div id="storeToast"
+    @class([
+      'toast',
+      'align-items-center',
+      'border-0',
+      'position-fixed',
+      'top-0',
+      'end-0',
+      'm-3',
+      'z-3',
+      'text-bg-success' => session('success'), 
+      'text-bg-danger' => session('error')
+    ])
+   role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ session('success') ?? session('error') }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+@endif
+<!-- 追加トースト -->
+
 <div class="card card-secondary">
   <div class="card-header">
     <div class="card-title">Title</div>
@@ -39,8 +65,7 @@
 
 @stop
 
-@push('css')
-    <!-- {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}} -->
+@push('style')
 @endpush
 
 @push('js')
