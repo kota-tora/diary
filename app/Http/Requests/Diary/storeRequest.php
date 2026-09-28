@@ -5,7 +5,7 @@ namespace App\Http\Requests\Diary;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class storeRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class storeRequest extends FormRequest
     {
         return [
             'content' => ['required', 'max:30', 'min:3'],
-            // 'image' => ['required', 'image']
+            'image' => ['required', 'image'],
         ];
     }
 
@@ -35,6 +35,7 @@ class storeRequest extends FormRequest
     {
         return [
             'content' => '本文',
+            'image' => '画像',
         ];
     }
 }
