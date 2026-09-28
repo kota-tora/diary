@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Diary\storeRequest;
+use App\Http\Requests\Diary\StoreRequest;
 use App\Services\DiaryService;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -35,11 +35,12 @@ class DiaryController extends Controller
     /**
      * 日記登録処理
      */
-    public function store(storeRequest $store_request)
+    public function store(StoreRequest $store_request)
     {
         try {
             $post = $store_request->validated();
             // 画像保存と日記登録処理
+            // 処理失敗時は例外発生で分岐し、戻り値の検証はしない
             $this->diary_service->store($post['content'], $store_request->file('image'));
 
             // 一覧へ
