@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Diary\StoreRequest;
+use App\Repository\DiaryRepository;
 use App\Services\DiaryService;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -11,9 +12,12 @@ class DiaryController extends Controller
 {
     protected $diary_service;
 
-    public function __construct(DiaryService $diary_service)
+    protected $diary_repository;
+
+    public function __construct(DiaryService $diary_service, DiaryRepository $diary_repository)
     {
         $this->diary_service = $diary_service;
+        $this->diary_repository = $diary_repository;
     }
 
     /**
@@ -21,7 +25,10 @@ class DiaryController extends Controller
      */
     public function index()
     {
-        return view('lists.index');
+        // 日記データをページネーションでID降順で取得する
+        $rows = $this->diary_repository->getPaginatedOrderedById(true);
+
+        return view('diaries.index', compact('rows'));
     }
 
     /**
@@ -29,7 +36,7 @@ class DiaryController extends Controller
      */
     public function create()
     {
-        return view('create.index');
+        return view('diaries.create');
     }
 
     /**

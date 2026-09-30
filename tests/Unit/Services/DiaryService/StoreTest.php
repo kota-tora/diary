@@ -3,11 +3,8 @@
 use App\Models\Diary;
 use App\Repository\DiaryRepository;
 use App\Services\DiaryService;
-use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Mockery;
-use RuntimeException;
 
 it('データ保存と画像ファイル生成テスト', function ($file_name): void {
     // 仮想ディスクに差し替え
@@ -35,7 +32,7 @@ it('データ保存と画像ファイル生成テスト', function ($file_name):
     $diary_result = $diary_service->store($test_content, $test_img_file);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.$diary_result->img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$diary_result->img_name))->tobe(true);
 })->with(['test.jpg', 'test.jpeg', 'test.png', 'test.gif']);
 
 it('DBへの保存が失敗した場合のテスト', function (): void {
@@ -57,5 +54,5 @@ it('DBへの保存が失敗した場合のテスト', function (): void {
     expect(fn () => $diary_service->store($test_content, $test_img_file))->toThrow(Exception::class);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.$expect_img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$expect_img_name))->tobe(true);
 });

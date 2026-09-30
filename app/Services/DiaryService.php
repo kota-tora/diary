@@ -23,7 +23,7 @@ class DiaryService
     {
         return DB::transaction(function () use ($content, $image) {
             // 画像ファイルを保存
-            $file_path = $image->store('image/diaries', 'public');
+            $file_path = $image->store('images/diaries', 'public');
 
             // DB保存処理
             return $this->diary_repository->create([
