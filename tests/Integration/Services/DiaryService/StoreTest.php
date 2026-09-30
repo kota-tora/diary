@@ -33,7 +33,7 @@ it('データが実際に保存され、画像ファイルが生成されるか�
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.$diary_result->img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$diary_result->img_name))->tobe(true);
 })->with(['test.jpg', 'test.jpeg', 'test.png', 'test.gif']);
 
 it('contentが重複しても正常に保存できる', function (): void {
@@ -54,7 +54,7 @@ it('contentが重複しても正常に保存できる', function (): void {
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.$diary_success_result->img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$diary_success_result->img_name))->tobe(true);
 
     // 2件目
     $second_img_file = UploadedFile::fake()->image('test2.jpg');
@@ -68,7 +68,7 @@ it('contentが重複しても正常に保存できる', function (): void {
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.basename($second_img_file->hashName())))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.basename($second_img_file->hashName())))->tobe(true);
 });
 
 it('img_nameが重複するとDB保存に失敗し、例外が発生する', function (): void {
@@ -90,7 +90,7 @@ it('img_nameが重複するとDB保存に失敗し、例外が発生する', fun
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.$diary_success_result->img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$diary_success_result->img_name))->tobe(true);
 
     // 2件目
     $test_fail_content = '2件目テスト';
@@ -105,5 +105,5 @@ it('img_nameが重複するとDB保存に失敗し、例外が発生する', fun
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('image/diaries/'.basename($fail_img_file->hashName())))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.basename($fail_img_file->hashName())))->tobe(true);
 });
