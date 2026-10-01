@@ -34,4 +34,12 @@ class DiaryRepository
             ->orderBy('diary_id', $order)
             ->paginate(config('app.pagination.low'));
     }
+
+    /**
+     * 削除処理
+     */
+    public function delete(Diary $diary): ?bool
+    {
+        return $diary->delete();
+    }
 }

@@ -62,9 +62,9 @@
                       </a>
                     </div>
                     <div>
-                      <a>
-                        <button type="button" class="btn btn-danger">削除</button>
-                      </a>
+                      <!-- 削除モーダルコンポーネント -->
+                      <x-delete-modal :route="route('diary.destroy', $row->diary_id)" :id="$row->diary_id"  />
+                      <!-- 削除モーダルコンポーネント -->
                     </div>
                   </td>
               </tr>
