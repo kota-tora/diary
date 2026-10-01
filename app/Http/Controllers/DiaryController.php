@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Diary\StoreRequest;
+use App\Models\Diary;
 use App\Repository\DiaryRepository;
 use App\Services\DiaryService;
 use Exception;
@@ -59,6 +60,27 @@ class DiaryController extends Controller
             ]);
 
             return redirect()->route('diary.index')->with('error', '日記を登録できませんでした。');
+        }
+    }
+
+    /**
+     * 削除処理
+     */
+    public function destroy(Diary $diary)
+    {
+        try {
+            // 削除
+            $this->diary_repository->delete($diary);
+
+            // 一覧へ
+            return redirect(route('diary.index'))->with('success', '日記を削除しました。');
+        } catch (Exception $e) {
+            Log::error('日記削除に失敗しました。', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()->route('diary.index')->with('error', '日記を削除できませんでした。');
         }
     }
 }
