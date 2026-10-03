@@ -20,7 +20,7 @@ class DiaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'content' => fake()->realText(30),
+            'content' => fake()->text(30),
             'img_name' => fake()->uuid().'.jpg',
         ];
     }

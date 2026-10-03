@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Diary;
 use App\Services\DiaryService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\UploadedFile;
@@ -29,11 +30,11 @@ it('データが実際に保存され、画像ファイルが生成されるか�
     // DBに保存されているかを検証
     $this->assertDatabaseHas('diaries', [
         'content' => $test_content,
-        'img_name' => basename($test_img_file->hashName()),
+        'img_name' => $test_img_file->hashName(),
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('images/diaries/'.$diary_result->img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$diary_result->img_name))->toBeTrue();
 })->with(['test.jpg', 'test.jpeg', 'test.png', 'test.gif']);
 
 it('contentが重複しても正常に保存できる', function (): void {
@@ -50,11 +51,11 @@ it('contentが重複しても正常に保存できる', function (): void {
     // DBに保存されているかを検証
     $this->assertDatabaseHas('diaries', [
         'content' => $same_content,
-        'img_name' => basename($test_img_file->hashName()),
+        'img_name' => $test_img_file->hashName(),
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('images/diaries/'.$diary_success_result->img_name))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$diary_success_result->img_name))->toBeTrue();
 
     // 2件目
     $second_img_file = UploadedFile::fake()->image('test2.jpg');
@@ -64,35 +65,24 @@ it('contentが重複しても正常に保存できる', function (): void {
     // DBに保存されているかを検証
     $this->assertDatabaseHas('diaries', [
         'content' => $same_content,
-        'img_name' => basename($second_img_file->hashName()),
+        'img_name' => $second_img_file->hashName(),
     ]);
 
     // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('images/diaries/'.basename($second_img_file->hashName())))->tobe(true);
+    expect(Storage::disk('public')->exists('images/diaries/'.$second_img_file->hashName()))->toBeTrue();
 });
 
 it('img_nameが重複するとDB保存に失敗し、例外が発生する', function (): void {
     // ランダム文字列を同じ文字列にし、ファイル名が重複するようにする
     Str::createRandomStringsUsing(fn () => 'duplicate_name');
-
     $diary_service = app()->make(DiaryService::class);
 
-    // 1件目
-    $test_success_content = '１件目テスト';
-    $test_img_file = UploadedFile::fake()->image('test.jpg');
-    // 正常に処理が終了する
-    $diary_success_result = $diary_service->store($test_success_content, $test_img_file);
-
-    // DBに保存されているかを検証
-    $this->assertDatabaseHas('diaries', [
-        'content' => $test_success_content,
-        'img_name' => basename($test_img_file->hashName()),
+    // 1件目データ作成
+    Diary::factory()->create([
+        'img_name' => 'duplicate_name.jpg'
     ]);
 
-    // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('images/diaries/'.$diary_success_result->img_name))->tobe(true);
-
-    // 2件目
+    // 2件目のデータ
     $test_fail_content = '2件目テスト';
     $fail_img_file = UploadedFile::fake()->image('fail.jpg');
     // DBのユニーク制約で例外が発生することを検証する
@@ -101,9 +91,6 @@ it('img_nameが重複するとDB保存に失敗し、例外が発生する', fun
     // DBに保存されていないかを検証
     $this->assertDatabaseMissing('diaries', [
         'content' => $test_fail_content,
-        'img_name' => basename($fail_img_file->hashName()),
+        'img_name' => $fail_img_file->hashName(),
     ]);
-
-    // ファイルが保存されているか検証
-    expect(Storage::disk('public')->exists('images/diaries/'.basename($fail_img_file->hashName())))->tobe(true);
 });

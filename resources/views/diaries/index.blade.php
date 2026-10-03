@@ -52,12 +52,12 @@
                   <td class="text-center">{{ $row->diary_id }}</td>
                   <td class="text-center">{{ $row->content }}</td>
                   <td class="text-center">
-                    <img src="{{ asset('storage/images/diaries/' . $row->img_name) }}" alt="日記画像">
+                    <img src="{{ !empty($row->img_name) ? asset('storage/images/diaries/' . $row->img_name) : asset('images/noimage.jpg') }}" alt="日記画像">
                   </td>
                   <td>{{ $row->created_at->format('Y-m-d H:i:s') }}</td>
                   <td class="text-center">
                     <div class="mb-4">
-                      <a>
+                      <a href="{{ route('diary.edit', $row) }}">
                         <button type="button" class="btn btn-success">編集</button>
                       </a>
                     </div>

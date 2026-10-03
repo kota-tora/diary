@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Diary\StoreRequest;
+use App\Http\Requests\Diary\UpdateRequest;
 use App\Models\Diary;
 use App\Repository\DiaryRepository;
 use App\Services\DiaryService;
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\Log;
 class DiaryController extends Controller
 {
     protected $diary_service;
-
     protected $diary_repository;
 
     public function __construct(DiaryService $diary_service, DiaryRepository $diary_repository)
@@ -33,15 +33,17 @@ class DiaryController extends Controller
     }
 
     /**
-     * 日記新規登録画面
+     * 追加画面
      */
     public function create()
     {
-        return view('diaries.create');
+        $is_update = false;
+        return view('diaries.create', compact('is_update'));
     }
 
     /**
      * 日記登録処理
+     * @param StoreRequest $store_request
      */
     public function store(StoreRequest $store_request)
     {
@@ -64,7 +66,43 @@ class DiaryController extends Controller
     }
 
     /**
+     * 編集画面
+     * @param Diary $diary
+     */
+    public function edit(Diary $diary)
+    {
+        $is_update = true;
+        return view('diaries.create', compact('is_update', 'diary'));
+    }
+
+    /**
+     * 更新処理
+     * @param UpdateRequest $update_request
+     * @param Diary $diary
+     */
+    public function update(UpdateRequest $update_request, Diary $diary)
+    {
+        try {
+            $post = $update_request->validated();
+            // 画像と日記更新処理
+            // 処理失敗時は例外発生で分岐し、戻り値の検証はしない
+            $this->diary_service->update($diary, $post['content'], $update_request->file('image'));
+
+            // 一覧へ
+            return redirect(route('diary.index'))->with('success', '日記を更新しました。');
+        } catch (Exception $e) {
+            Log::error('日記更新処理に失敗しました。', [
+                'exception' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return redirect()->route('diary.index')->with('error', '日記を更新できませんでした。');
+        }
+    }
+
+    /**
      * 削除処理
+     * @param Diary $diary
      */
     public function destroy(Diary $diary)
     {

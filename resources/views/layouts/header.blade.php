@@ -10,16 +10,32 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
-    <ul class="nav">
+    <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ route('diary.index') }}">一覧</a>
+            <a @class([
+            'nav-link',
+            'active' => request()->routeIs('diary.index')
+            ]) 
+            href="{{ route('diary.index') }}">
+            一覧
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('diary.create') }}">追加</a>
+            <a @class([
+                'nav-link',
+                'active' => request()->routeIs('diary.create')
+                ]) 
+            href="{{ route('diary.create') }}">
+            追加
+            </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">編集</a>
-        </li>
+        @if(request()->routeIs('diary.edit'))
+            <li class="nav-item">
+                <a class="nav-link active" href="">
+                編集
+                </a>
+            </li>
+        @endif
     </ul>
   </div>
 </nav>
