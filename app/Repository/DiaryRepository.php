@@ -3,24 +3,13 @@
 namespace App\Repository;
 
 use App\Models\Diary;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class DiaryRepository
+class DiaryRepository extends BaseRepository
 {
-    protected $model;
-
     public function __construct(Diary $diary)
     {
-        $this->model = $diary;
-    }
-
-    /**
-     * 作成
-     */
-    public function create(array $params): Model
-    {
-        return $this->model->create($params);
+        parent::__construct($diary);
     }
 
     /**
@@ -33,13 +22,5 @@ class DiaryRepository
         return $this->model->query()
             ->orderBy('diary_id', $order)
             ->paginate(config('app.pagination.low'));
-    }
-
-    /**
-     * 削除処理
-     */
-    public function delete(Diary $diary): ?bool
-    {
-        return $diary->delete();
     }
 }

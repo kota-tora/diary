@@ -6,16 +6,8 @@ use App\Models\Diary;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +17,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'content' => ['required', 'max:' . Diary::CONTENT_MAX_LENGTH, 'min:' . Diary::CONTENT_MIN_LENGTH],
-            'image' => ['required', 'image'],
+            'image' => ['nullable', 'image'],
         ];
     }
 

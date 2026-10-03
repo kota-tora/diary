@@ -16,4 +16,9 @@ class Diary extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    /** 本文の最小文字数 */
+    public const CONTENT_MIN_LENGTH = 3;
+    /** 本文の最大文字数 */
+    public const CONTENT_MAX_LENGTH = 30;
 }
