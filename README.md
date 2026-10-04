@@ -29,7 +29,11 @@ npm run build
 
 ## テスト
 ```
-php artisan test
-or
- ./vendor/bin/pest
+cp .env.example .env.testing
+php artisan test (全実行)
+php artisan test --testsuite=Unit
+php artisan test --testsuite=Integration
+php artisan test --testsuite=Feature
+php artisan test テストファイルパス
+テストファイルパス：tests/
  ```
