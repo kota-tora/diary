@@ -18,7 +18,6 @@ class BaseRepository
 
     /**
      * 作成
-     * @param array $params
      */
     public function create(array $params): Model
     {
@@ -27,8 +26,6 @@ class BaseRepository
 
     /**
      * 更新
-     * @param Model $model
-     * @param array $params
      */
     public function update(Model $model, array $params): bool
     {

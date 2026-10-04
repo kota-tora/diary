@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 function updateRequestValidate(string $content, $img_file_name = ''): Illuminate\Validation\Validator
 {
     // バリデーションルール取得
-    $rules = (new UpdateRequest())->rules();
+    $rules = (new UpdateRequest)->rules();
     // テストファイルを作成
     $test_img_file = $img_file_name ? UploadedFile::fake()->image($img_file_name) : '';
 
@@ -56,7 +56,7 @@ it('contentが31文字以上だとバリデーション通過しないか', func
 
 it('contentのキーがないとバリデーション通過しないか', function (): void {
     // バリデーションルール取得
-    $rules = (new UpdateRequest())->rules();
+    $rules = (new UpdateRequest)->rules();
     $test_img_file = UploadedFile::fake()->image('test.jpg');
     // contentを除外して、バリデーション実行
     $validator = Validator::make(['image' => $test_img_file], $rules);
@@ -67,7 +67,7 @@ it('contentのキーがないとバリデーション通過しないか', functi
 
 it('imageにファイルではなくstringを渡すとバリデーション通過しないか', function (): void {
     // バリデーションルール取得
-    $rules = (new UpdateRequest())->rules();
+    $rules = (new UpdateRequest)->rules();
     // imageにファイルではなくstringを渡しバリデーション実行
     $validator = Validator::make(['content' => str_repeat('あ', 10), 'image' => 'ダミーテキスト'], $rules);
 
@@ -83,7 +83,7 @@ it('imageが空でもバリデーション通過するか', function (): void {
 
 it('imageのキーがなくてもバリデーション通過するか', function (): void {
     // バリデーションルール取得
-    $rules = (new UpdateRequest())->rules();
+    $rules = (new UpdateRequest)->rules();
     // imageを除外して、バリデーション実行
     $validator = Validator::make(['content' => str_repeat('あ', 10)], $rules);
 

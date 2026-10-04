@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 class DiaryController extends Controller
 {
     protected $diary_service;
+
     protected $diary_repository;
 
     public function __construct(DiaryService $diary_service, DiaryRepository $diary_repository)
@@ -38,12 +39,12 @@ class DiaryController extends Controller
     public function create()
     {
         $is_update = false;
+
         return view('diaries.create', compact('is_update'));
     }
 
     /**
      * 日記登録処理
-     * @param StoreRequest $store_request
      */
     public function store(StoreRequest $store_request)
     {
@@ -67,18 +68,16 @@ class DiaryController extends Controller
 
     /**
      * 編集画面
-     * @param Diary $diary
      */
     public function edit(Diary $diary)
     {
         $is_update = true;
+
         return view('diaries.create', compact('is_update', 'diary'));
     }
 
     /**
      * 更新処理
-     * @param UpdateRequest $update_request
-     * @param Diary $diary
      */
     public function update(UpdateRequest $update_request, Diary $diary)
     {
@@ -102,7 +101,6 @@ class DiaryController extends Controller
 
     /**
      * 削除処理
-     * @param Diary $diary
      */
     public function destroy(Diary $diary)
     {

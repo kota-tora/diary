@@ -56,7 +56,7 @@ it('DBへの保存が失敗した場合に例外が発生し、ファイルも�
     expect(fn () => $diary_service->store($test_content, $test_img_file))->toThrow(Exception::class, 'DB error');
 
     // ファイルが保存されていないことを検証
-    expect(Storage::disk('public')->exists('images/diaries/' . $expect_img_name))->toBeFalse();
+    expect(Storage::disk('public')->exists('images/diaries/'.$expect_img_name))->toBeFalse();
 });
 
 it('画像の保存が失敗した場合に例外が発生する', function (): void {
@@ -69,8 +69,8 @@ it('画像の保存が失敗した場合に例外が発生する', function (): 
     // 画像ファイル作成に失敗し、createメソッドが呼ばれないモック
     $repository = Mockery::mock(DiaryRepository::class);
     $repository->shouldNotReceive('create');
-        
+
     $service = new DiaryService($repository);
     // テスト対象メソッド実行し例外が返ってくるかを検証
-    expect(fn() => $service->store('テスト投稿', $uploaded_file))->toThrow(Exception::class, '画像の保存に失敗しました');
+    expect(fn () => $service->store('テスト投稿', $uploaded_file))->toThrow(Exception::class, '画像の保存に失敗しました');
 });

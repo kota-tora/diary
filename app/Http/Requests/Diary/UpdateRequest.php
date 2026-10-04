@@ -16,7 +16,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required', 'max:' . Diary::CONTENT_MAX_LENGTH, 'min:' . Diary::CONTENT_MIN_LENGTH],
+            'content' => ['required', 'max:'.Diary::CONTENT_MAX_LENGTH, 'min:'.Diary::CONTENT_MIN_LENGTH],
             'image' => ['nullable', 'image'],
         ];
     }

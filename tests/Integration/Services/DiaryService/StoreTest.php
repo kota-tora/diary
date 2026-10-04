@@ -79,7 +79,7 @@ it('img_nameが重複するとDB保存に失敗し、例外が発生する', fun
 
     // 1件目データ作成
     Diary::factory()->create([
-        'img_name' => 'duplicate_name.jpg'
+        'img_name' => 'duplicate_name.jpg',
     ]);
 
     // 2件目のデータ
