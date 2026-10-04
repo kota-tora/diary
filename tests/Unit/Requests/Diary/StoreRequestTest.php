@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
  * バリデーションを実行し、結果を返す
  *
  * @param: string $content
+ *
  * @param: string $img_file_name
  */
 function storeRequestValidate(string $content, $img_file_name = 'test.jpg'): Illuminate\Validation\Validator

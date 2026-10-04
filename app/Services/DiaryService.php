@@ -28,7 +28,7 @@ class DiaryService
             // 画像ファイルを保存
             $file_path = $image->store('images/diaries', 'public');
 
-            if (!$file_path) {
+            if (! $file_path) {
                 throw new Exception('画像の保存に失敗しました');
             }
 
@@ -61,7 +61,7 @@ class DiaryService
                 // 画像ファイルを保存
                 $file_path = $image->store('images/diaries', 'public');
 
-                if (!$file_path) {
+                if (! $file_path) {
                     throw new Exception('画像の保存に失敗しました');
                 }
 
@@ -71,7 +71,7 @@ class DiaryService
                 // 更新処理完了後
                 DB::afterCommit(function () use ($old_img_name) {
                     // 古いファイルの削除処理
-                    Storage::disk('public')->delete('images/diaries/' . $old_img_name);
+                    Storage::disk('public')->delete('images/diaries/'.$old_img_name);
                 });
                 // DB更新処理に失敗した場合
                 DB::afterRollBack(function () use ($file_path) {
@@ -79,6 +79,7 @@ class DiaryService
                     Storage::disk('public')->delete($file_path);
                 });
             }
+
             // DB保存処理
             return $this->diary_repository->update($before_diary, $updates);
         });

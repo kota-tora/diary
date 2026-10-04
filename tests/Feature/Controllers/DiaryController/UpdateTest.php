@@ -3,8 +3,8 @@
 use App\Models\Diary;
 use App\Services\DiaryService;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     // 仮想ディスクに差し替え
@@ -14,7 +14,7 @@ beforeEach(function () {
 it('画像ありで更新：リダイレクトとsuccessセッション、DB、新しい画像がある、古い画像が消えている', function (): void {
     // 更新前のデータ作成
     $before_diary = Diary::factory()->create();
-    Storage::disk('public')->put('images/diaries/' . $before_diary->img_name, 'dummy');
+    Storage::disk('public')->put('images/diaries/'.$before_diary->img_name, 'dummy');
     // 更新用データ
     $update_img = UploadedFile::fake()->image('update.jpg');
     $update_content = [
@@ -38,15 +38,15 @@ it('画像ありで更新：リダイレクトとsuccessセッション、DB、�
     ]);
 
     // 元のファイルが削除されていることを検証
-    expect(Storage::disk('public')->exists('images/diaries/' . $before_diary->img_name))->toBeFalse();
+    expect(Storage::disk('public')->exists('images/diaries/'.$before_diary->img_name))->toBeFalse();
     // ファイルが生成されていることを検証
-    expect(Storage::disk('public')->exists('images/diaries/' . $update_img->hashName()))->toBeTrue();
+    expect(Storage::disk('public')->exists('images/diaries/'.$update_img->hashName()))->toBeTrue();
 });
 
 it('画像なしで更新：本文だけが変わる、古い画像が残っている', function (): void {
     // 更新前のデータ作成
     $before_diary = Diary::factory()->create();
-    Storage::disk('public')->put('images/diaries/' . $before_diary->img_name, 'dummy');
+    Storage::disk('public')->put('images/diaries/'.$before_diary->img_name, 'dummy');
 
     // 画像なし更新用データ
     $update_content = [
@@ -65,11 +65,11 @@ it('画像なしで更新：本文だけが変わる、古い画像が残って�
     $this->assertDatabaseHas('diaries', [
         'diary_id' => $before_diary->diary_id,
         'content' => $update_content['content'],
-        'img_name' => $before_diary->img_name
+        'img_name' => $before_diary->img_name,
     ]);
 
     // 元のファイルが削除されていないことを検証
-    expect(Storage::disk('public')->exists('images/diaries/' . $before_diary->img_name))->toBeTrue();
+    expect(Storage::disk('public')->exists('images/diaries/'.$before_diary->img_name))->toBeTrue();
 });
 
 it('存在しないIDを指定：404になる', function (): void {
@@ -106,7 +106,7 @@ it('contentが空だとバリデーションエラーになり更新されない
     // DBに保存されていないことを検証
     $this->assertDatabaseHas('diaries', [
         'diary_id' => $before_diary->diary_id,
-        'content' => $before_diary->content
+        'content' => $before_diary->content,
     ]);
 });
 
@@ -114,12 +114,12 @@ it('サービスで例外が発生：errorセッション、ログが出力さ�
     Log::spy();
     // 更新前のデータ作成
     $before_diary = Diary::factory()->create();
-    Storage::disk('public')->put('images/diaries/' . $before_diary->img_name, 'dummy');
+    Storage::disk('public')->put('images/diaries/'.$before_diary->img_name, 'dummy');
 
     // 画像あり更新用データ
     $update_content = [
         'content' => 'test投稿',
-        'image' => UploadedFile::fake()->image('update.jpg')
+        'image' => UploadedFile::fake()->image('update.jpg'),
     ];
 
     // モックして例外を発生させる
@@ -141,7 +141,7 @@ it('サービスで例外が発生：errorセッション、ログが出力さ�
     // 更新されていないことを検証
     $this->assertDatabaseHas('diaries', [
         'diary_id' => $before_diary->diary_id,
-        'content' => $before_diary->content
+        'content' => $before_diary->content,
     ]);
     // ログ出力を検証
     Log::shouldHaveReceived('error')->once();
