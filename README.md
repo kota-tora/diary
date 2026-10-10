@@ -16,6 +16,7 @@ php artisan key:generate
 php artisan migrate
 php artisan storage:link --relative
 npm install
+npm run build
 ```
 ## ファイル編集時
 ```

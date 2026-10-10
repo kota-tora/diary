@@ -10,11 +10,11 @@
     </button>
 
     <!-- Modal -->
-    <div class="modal fade" id="deleteModal{{ $id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal{{ $id }}" tabindex="-1" aria-labelledby="deleteModal{{ $id }}Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="deleteModal$idLabel">削除確認</h1>
+            <h1 class="modal-title fs-5" id="deleteModal{{ $id }}Label">削除確認</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

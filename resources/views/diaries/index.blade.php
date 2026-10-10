@@ -31,46 +31,49 @@
 <!-- 追加トースト -->
 
 <div class="card card-secondary">
-  <div class="card-body">
     @if ($rows->isEmpty())
+    <div class="card-body">
       <div class="h3">データが登録されてません</div>
+    </div>
     @else
-      <div class="table-responsive">
-        <table class="table table-striped align-middle mb-0">
-          <thead>
-            <tr>
-              <th class="text-center col-1">ID</th>
-              <th class="text-center col-6">内容</th>
-              <th class="text-center col-2">画像</th>
-              <th class="text-center col-2">作成日</th>
-              <th class="text-center col-1">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($rows as $row)
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle mb-0">
+            <thead>
               <tr>
-                  <td class="text-center">{{ $row->diary_id }}</td>
-                  <td class="text-center">{{ $row->content }}</td>
-                  <td class="text-center">
-                    <img src="{{ !empty($row->img_name) ? asset('storage/images/diaries/' . $row->img_name) : asset('images/noimage.jpg') }}" alt="日記画像">
-                  </td>
-                  <td>{{ $row->created_at->format('Y-m-d H:i:s') }}</td>
-                  <td class="text-center">
-                    <div class="mb-4">
-                      <a href="{{ route('diary.edit', $row) }}">
-                        <button type="button" class="btn btn-success">編集</button>
-                      </a>
-                    </div>
-                    <div>
-                      <!-- 削除モーダルコンポーネント -->
-                      <x-delete-modal :route="route('diary.destroy', $row->diary_id)" :id="$row->diary_id"  />
-                      <!-- 削除モーダルコンポーネント -->
-                    </div>
-                  </td>
+                <th class="text-center col-1">ID</th>
+                <th class="text-center col-6">内容</th>
+                <th class="text-center col-2">画像</th>
+                <th class="text-center col-2">作成日</th>
+                <th class="text-center col-1">操作</th>
               </tr>
-            @endforeach
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              @foreach($rows as $row)
+                <tr>
+                    <td class="text-center">{{ $row->diary_id }}</td>
+                    <td class="text-center">{{ $row->content }}</td>
+                    <td class="text-center">
+                      <img class="diary-thumb" src="{{ !empty($row->img_name) ? asset('storage/images/diaries/' . $row->img_name) : asset('images/noimage.jpg') }}" alt="日記画像">
+                    </td>
+                    <td>{{ $row->created_at->format('Y-m-d H:i:s') }}</td>
+                    <td class="text-center">
+                      <div class="mb-4">
+                        <a href="{{ route('diary.edit', $row) }}">
+                          <button type="button" class="btn btn-success">編集</button>
+                        </a>
+                      </div>
+                      <div>
+                        <!-- 削除モーダルコンポーネント -->
+                        <x-delete-modal :route="route('diary.destroy', $row->diary_id)" :id="$row->diary_id"  />
+                        <!-- 削除モーダルコンポーネント -->
+                      </div>
+                    </td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="card-footer">
         {{ $rows->links() }}
